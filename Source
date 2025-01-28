@@ -226,6 +226,9 @@ local function printTable(playerValues)
 end
 
 local function LoadPlayerItems(List)
+	if not List then
+		return 
+	end
 	local PreItem = Gui.Main.Worth.List.Layout.Pre
 	for _ , part in pairs(PreItem.Parent:GetChildren()) do
 		if part ~= PreItem and part:IsA("ImageLabel") then
@@ -560,9 +563,8 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 			return 
 		end
 		local Success = false
-
-		Character.Humanoid.PlatformStand = true
-
+		Humanoid.WalkSpeed = 0
+		Humanoid.AutoRotate = false
 		local Connection = CloseChar.Humanoid:GetPropertyChangedSignal("Sit"):Once(function()
 			local Wait = true
 			Tool = nil
@@ -649,10 +651,11 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 		end
 		EquipRemote:FireServer("Cold Plunge")
 		
-		while Tool.Parent == Character do
+		while Tool and Tool.Parent == Character do
 			if not Working then
 				break
 			end
+			EquipRemote:FireServer("Cold Plunge")
 			task.wait()
 		end
 		TpTool = Tool
