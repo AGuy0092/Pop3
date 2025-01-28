@@ -635,6 +635,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 		Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,10))
 		EquipRemote:FireServer("Wardrobe")
 		task.wait(0.5)
+		Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,10))
 		DropRemote:FireServer("Wardrobe")
 
 		EquipRemote:FireServer("Drone")
@@ -663,7 +664,12 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 			Tool = GetTool("Cold Plunge")
 			task.wait()
 		end
-		
+		if Tool then
+			local SelectionBox = Instance.new("SelectionBox" , Tool.Handle)
+        	SelectionBox.Adornee = Tool.Handle
+        	SelectionBox.LineThickness = 0.02
+		end
+
 		while not Invisible() do
 			if not Working then
 				break
@@ -698,3 +704,6 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 
 	end
 end)
+
+
+
