@@ -604,7 +604,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 				Wait = false
 				Working = false
 			end)
-			local Duration = 200
+			local Duration = 800 -- 200
 			local StartTime = os.clock()
 			local Trys = 0 
 			local Height = 0
