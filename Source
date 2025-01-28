@@ -377,6 +377,7 @@ end
 local function GetItems()
 	local MyItems = false
 	for _ , part in pairs(workspace.Dropped:GetDescendants()) do
+		print(part)
 		if part and part.Name == "Owner" and part.Value.Name == LocalPlayer.Name then
 			MyItems = true
 		end
