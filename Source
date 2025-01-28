@@ -491,8 +491,12 @@ Next.MouseButton1Click:Connect(function()
 	if CoolDown then return end
 	CoolDown = true
 	task.delay(0.1, function()CoolDown = false end)
+	local StartIndex = Index
 	while true do
 		Index += 1 
+		if StartIndex == Indx then
+			break
+		end
 		if Index > #game.Players:GetPlayers() - 1 then
 			Index = 1
 		end
@@ -509,8 +513,12 @@ Last.MouseButton1Click:Connect(function()
 	if CoolDown then return end
 	CoolDown = true
 	task.delay(0.1, function()CoolDown = false end)
+	local StartIndex = Index
 	while true do
-		Index -= 1 
+		Index -= 1
+		if StartIndex == Indx then
+			break
+		end
 		if Index == 0 then
 			Index = #game.Players:GetPlayers() - 1
 		end
@@ -545,6 +553,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 	task.delay(0.1, function()CoolDown = false end)
 	local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 	local Humanoid = Character:WaitForChild("Humanoid")
+
 	local Root = Character.HumanoidRootPart
 
 	if SelectedPlayer and game.Players:FindFirstChild(SelectedPlayer.Name) then
@@ -574,7 +583,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 				end
 				local Table = GetBorderPlayers()
 				if Table and Table[1] and Table[2] and Table[3] then
-					if CloseChar.Humanoid.Health > 1 and game.Players:FindFirstChild(CloseChar.Name) and not Success then
+					if CloseChar.Humanoid.Health > 0 and game.Players:FindFirstChild(CloseChar.Name) and not Success then
 						game.Players.LocalPlayer.WatchedPlayer.Value = LocalPlayer
 						Camera.CameraSubject = Table[3]
 						Success = true
@@ -634,15 +643,22 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 				ViewNewPlayer(Index)
 			end
 		end)
+
+		Humanoid.Died:Once(function()
+			Notify("Canceled")
+			Wait = false
+			Working = false
+			return 
+		end)
+
 		Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,10))
 		EquipRemote:FireServer("Wardrobe")
 		task.wait(0.5)
 		Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,10))
 		DropRemote:FireServer("Wardrobe")
 
-		EquipRemote:FireServer("Drone")
-
 		while Tool == nil do 
+			EquipRemote:FireServer("Drone")
 			if not Working then
 				break
 			end
@@ -652,12 +668,13 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 		EquipRemote:FireServer("Cold Plunge")
 		
 		while Tool and Tool.Parent == Character do
+			EquipRemote:FireServer("Cold Plunge")
 			if not Working then
 				break
 			end
-			EquipRemote:FireServer("Cold Plunge")
 			task.wait()
 		end
+
 		TpTool = Tool
 		Tool = nil
 		while Tool == nil do 
