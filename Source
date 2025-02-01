@@ -437,6 +437,9 @@ local function GetBorderPlayers()
 			end
 		end
 	end
+	if not OtherPlayer then
+		Notify("Teleport")
+	end
 	return {MainPlayer , OtherPlayer, MainPart}
 end
 
@@ -609,7 +612,6 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 			end)
 			local Duration = 100
 			local StartTime = os.clock()
-			local Trys = 0 
 			local Height = 0
 
 		
@@ -629,15 +631,6 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 				end
 				task.wait()
 				local Table = GetBorderPlayers()
-				if Table and Table[1] and Table[2] and Table[3] then
-				elseif Trys > Duration then
-					Wait = false
-					Working = false
-					Notify("Teleport")
-					break
-				else
-					Trys += 1
-				end
 			end
 			if not Success then
 				Character.Humanoid.Health = 0
