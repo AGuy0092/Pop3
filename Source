@@ -374,12 +374,14 @@ end
 
 ------------------------------------------------------------------------- Scam Functions ---------------------------------------------------------------
 
-local function GetItems()
+local function GetItems(value)
 	local MyItems = false
 	for _ , part in pairs(workspace.Dropped:GetDescendants()) do
-		print(part)
 		if part and part.Name == "Owner" and part.Value.Name == LocalPlayer.Name then
 			MyItems = true
+			if part.Parent.Name == value then
+				return part.Parent.Name
+			end
 		end
 	end
 	return MyItems
@@ -605,7 +607,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 				Wait = false
 				Working = false
 			end)
-			local Duration = 800 -- 200
+			local Duration = 100
 			local StartTime = os.clock()
 			local Trys = 0 
 			local Height = 0
@@ -614,7 +616,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 			if TpTool then
 				TpTool.Parent = Character
 			end
-
+			Character.Humanoid.PlatformStand = true
 			while Wait do
 				Height = Lerp(Height, 100000000, 0.0000001)
 				for i = 0 , 10 do 
@@ -653,10 +655,23 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 		end)
 
 		Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,10))
-		EquipRemote:FireServer("Wardrobe")
-		task.wait(0.5)
+
+		while Tool == nil do 
+			EquipRemote:FireServer("Wardrobe")
+			if not Working then
+				break
+			end
+			Tool = GetTool("Wardrobe")
+			task.wait(0.1)
+		end
+
+		Tool = nil
 		Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,10))
-		DropRemote:FireServer("Wardrobe")
+
+		while GetItems("Wardrobe") ~= "Wardrobe" do
+			DropRemote:FireServer("Wardrobe")
+			task.wait()
+		end
 
 		while Tool == nil do 
 			EquipRemote:FireServer("Drone")
@@ -666,25 +681,18 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 			Tool = GetTool("Drone")
 			task.wait()
 		end
-		EquipRemote:FireServer("Cold Plunge")
-		
-		while Tool and Tool.Parent == Character do
-			EquipRemote:FireServer("Cold Plunge")
-			if not Working then
-				break
-			end
-			task.wait()
-		end
-
 		TpTool = Tool
 		Tool = nil
-		while Tool == nil do 
+
+		while Tool == nil do
+			EquipRemote:FireServer("Cold Plunge")
 			if not Working then
 				break
 			end
 			Tool = GetTool("Cold Plunge")
 			task.wait()
 		end
+
 		if Tool then
 			local SelectionBox = Instance.new("SelectionBox" , Tool.Handle)
         	SelectionBox.Adornee = Tool.Handle
@@ -698,6 +706,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 			task.wait()
 		end
 		while GetItems() do
+			Root.CFrame = Pos1 * CFrame.new(Vector3.new(16,0,0))
 			JumpRemote:FireServer()
 			if not Working then
 				break
