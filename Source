@@ -13,6 +13,7 @@ local DefaultCameraSubject = Camera.CameraSubject
 local Pos1 = CFrame.new(Vector3.new(937.39,49.77,-15548.36))
 local TpCFrame =  CFrame.new(Pos1.Position + Vector3.new(0, 300, 0)) * CFrame.Angles(math.rad(0),math.rad(180),math.rad(0))
 local Working = false
+local Wait = false
 
 local function restoreInstance(data, parent)
 	local instance = Instance.new(data.ClassName)
@@ -581,7 +582,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 		Humanoid.WalkSpeed = 0
 		Humanoid.AutoRotate = false
 		local Connection = CloseChar.Humanoid:GetPropertyChangedSignal("Sit"):Once(function()
-			local Wait = true
+			Wait = true
 			Tool = nil
 			CloseChar.Humanoid:GetPropertyChangedSignal("Sit"):Once(function()
 				if not Working then
@@ -727,6 +728,3 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 
 	end
 end)
-
-
-
