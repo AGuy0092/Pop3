@@ -625,6 +625,7 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 				for i = 0 , 10 do 
 					Root.CFrame = TpCFrame * CFrame.new(Vector3.new(0,Height,0))
 				end
+				JumpRemote:FireServer()
 				if os.clock() - StartTime >= Duration then
 					Wait = false
 					Working = false
@@ -728,3 +729,5 @@ Gui.Main.Scam.Scam.Button.MouseButton1Click:Connect(function()
 
 	end
 end)
+
+
